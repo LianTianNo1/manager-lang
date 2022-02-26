@@ -35,23 +35,26 @@ export default {
     width: 200px;
     transition: width 0.5s;
     background-image: linear-gradient(92deg, #2d6ebb, #494ab9);
+    background: #111827;
+    color: #9ca3af;
     height: 100vh;
-    box-shadow: 3px 0px 13px #0000003d;
+    box-shadow: 3px 0px 20px #00000030;
     z-index: 9;
   }
   .content-right {
     margin-left: 200px;
     background-color: #ffebe7;
     .nav-top {
-      height: 50px;
+      height: 60px;
       background-image: linear-gradient(310deg, #2d6ebb, #494ab9);
-      color: white;
+      color: #374151;
+      background: #f3f4f6;
       font-size: 1rem;
       /* margin-bottom: 10px; */
       padding: 0 2vw;
       position: relative;
       display: flex;
-      box-shadow: -1px 6px 6px 0px #0000003d;
+      box-shadow: 0px 1px 20px 0px #00000040;
       align-items: center;
       justify-content: space-between;
       z-index: 8;
@@ -59,7 +62,7 @@ export default {
     .wrapper {
       height: calc(100vh - 60px);
       // padding: 1rem;
-      background-color: #ff82a9;
+      // background-color: #ff82a9;
       position: relative;
       .wave {
         position: absolute;

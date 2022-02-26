@@ -21,21 +21,26 @@
             xlink:href="#gentle-wave"
             x="48"
             y="0"
-            fill="rgba(255,255,255,0.7"
+            fill="rgba(155,215,213,0.7)"
           />
           <use
             xlink:href="#gentle-wave"
             x="48"
             y="3"
-            fill="rgba(255,255,255,0.5)"
+            fill="rgba(54,140,191,0.6)"
           />
           <use
             xlink:href="#gentle-wave"
             x="48"
             y="5"
-            fill="rgba(255,255,255,0.3)"
+            fill="rgba(122,212,203,0.5)"
           />
-          <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+          <use
+            xlink:href="#gentle-wave"
+            x="48"
+            y="7"
+            fill="rgba(122,212,203,0.1)"
+          />
         </g>
       </svg>
     </div>
@@ -60,6 +65,7 @@ export default {
     rgba(0, 172, 193, 1) 100%
   );
   color: white;
+  background: #ffffff;
 }
 .inner-header {
   height: 65vh;
