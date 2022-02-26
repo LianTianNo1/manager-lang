@@ -22,7 +22,7 @@ const EnvConfig = {
 }
 export default {
   env,
-  mock: true,
+  mock: false,
   namespace: 'manager',
   // 这样直接可以根据不同的开发环境动态把 baseApi和mocApi给解构出来
   ...EnvConfig[env],
