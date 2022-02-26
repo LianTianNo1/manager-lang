@@ -2,16 +2,21 @@
 <template>
   <div class="login-wrapper">
     <div class="modal">
-      <el-form>
+      <!-- status-icon显示图标提醒
+      form 绑定 user
+      :rules使用校验规则
+       -->
+      <el-form ref="userForm" :model="user" status-icon :rules="rules">
         <h1 class="title">后台管理系统</h1>
-        <el-form-item>
+        <!-- 必须使用prop才能校验 -->
+        <el-form-item prop="userName">
           <el-input type="text" v-model="user.userName">
             <template #prefix>
               <el-icon class="el-input__icon"><Avatar /></el-icon>
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="userPwd">
           <el-input type="password" v-model="user.userPwd">
             <template #prefix>
               <el-icon class="el-input__icon"><Lock /></el-icon>
@@ -19,7 +24,9 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="btn-login" type="primary">登录</el-button>
+          <el-button @click="login" class="btn-login" type="primary"
+            >登录</el-button
+          >
         </el-form-item>
         <el-icon><bottom /></el-icon>
       </el-form>
@@ -61,6 +68,18 @@ export default {
   methods: {
     goHome() {
       this.$router.push('/welcome')
+    },
+    login() {
+      this.$refs.userForm.validate((valid) => {
+        if (valid) {
+          this.$api.login(this.user).then((res) => {
+            this.$store.commit("saveUserInfo", res);
+            this.$router.push("/welcome");
+          });
+        } else {
+          return false;
+        }
+      });
     }
   }
 }

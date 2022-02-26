@@ -67,6 +67,7 @@ function request(options) {
   if (typeof options.mock != 'undefined') {
     isMock = options.mock
   }
+  // console.log(isMock)
   // 根据不同的环境设置不同的baseURL
   if (config.env === 'prod') {
     service.defaults.baseURL = config.baseApi

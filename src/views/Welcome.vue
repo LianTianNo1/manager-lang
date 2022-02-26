@@ -11,7 +11,7 @@ export default {
     // }).then((res) => {
     //   console.log(res)
     // })
-    this.$request.get('/login', { name: 'lang' }).then(res => console.log(res))
+    // this.$request.get('/login', { name: 'lang' }).then(res => console.log(res))
   },
 }
 
