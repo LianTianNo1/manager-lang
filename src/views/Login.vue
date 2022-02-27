@@ -90,16 +90,21 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f9e7f0;
+  // background-color: #f9e7f0;
+  background: url(../assets/images/loginbg.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
   .modal {
     width: 500px;
-    background: #f8e7f1;
-    box-shadow: 20px 20px 60px #d3c4cd, -20px -20px 60px #f8e7f1,
-      0 0 2vh 2vh #f9e7f0;
+    background: #d4e2ef57;
+    box-shadow: 20px 20px 60px #436593, -20px -20px 60px #c1d4e9,
+      0 0 2vh 2vh #537ca8;
     padding: 1em;
     border-radius: 20px;
+    overflow: hidden;
+
     .title {
       font-size: 2em;
       line-height: 1.5;
@@ -113,12 +118,12 @@ export default {
       width: 100%;
     }
     .el-button--primary {
-      --el-button-bg-color: #fdb4df !important;
-      --el-button-border-color: #f8e7f1 !important;
-      --el-button-hover-bg-color: rgb(231 101 177) !important;
-      --el-button-hover-border-color: rgb(253 180 223) !important;
-      --el-button-active-bg-color: rgb(253 180 223) !important;
-      --el-button-active-border-color: rgb(227 102 176) !important;
+      --el-button-bg-color: #c4d5e9 !important;
+      --el-button-border-color: #436593 !important;
+      --el-button-hover-bg-color: rgb(214 228 244) !important;
+      --el-button-hover-border-color: rgb(155 180 216) !important;
+      --el-button-active-bg-color: rgb(67 100 147) !important;
+      --el-button-active-border-color: rgb(197 214 234) !important;
     }
   }
 }

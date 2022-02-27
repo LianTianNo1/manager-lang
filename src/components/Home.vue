@@ -73,7 +73,6 @@ export default {
       .main-home {
         position: relative;
         z-index: 1;
-        padding: 1rem;
         height: 100%;
       }
     }
