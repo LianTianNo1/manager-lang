@@ -11,6 +11,7 @@ import storage from './utils/storage'
 import api from './api/index'
 // 导入vuex
 import store from './store'
+import * as ElIconModules from '@element-plus/icons' //导入所有element icon图标
 const app = createApp(App)
 // 挂载到app上
 app.config.globalProperties.$request = request
@@ -19,4 +20,10 @@ app.config.globalProperties.$api = api
 app.use(ElementPlus)
 app.use(router)
 app.use(store)
+
+// 全局注册element-plus icon图标组件
+Object.keys(ElIconModules).forEach((key) => {
+  app.component(key, ElIconModules[key])
+})
+
 app.mount('#app')

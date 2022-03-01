@@ -1,10 +1,48 @@
 <template>
   <div class="basic-layour">
-    <div class="nav-side"></div>
-    <div class="content-right">
+    <div :class="['nav-side', isCollapse ? 'fold' : 'unfold']">
+      <div class="logo">
+        <img src="../assets/logo.jpg" alt="" />
+        <p v-show="!isCollapse">lang Manager</p>
+      </div>
+      <el-menu
+        default-active="2"
+        text-color="var(--bwhite)"
+        background-color="var(--ssblue)"
+        :collapse="isCollapse"
+        router
+        class="nav-menu"
+      >
+        <tree-menu :userMenu="menuList"></tree-menu>
+      </el-menu>
+    </div>
+    <div :class="['content-right', isCollapse ? 'fold' : 'unfold']">
       <div class="nav-top">
-        <div class="bread">面包屑</div>
-        <div class="user">用户</div>
+        <div class="bread-left">
+          <el-icon @click="toggle"
+            ><Expand v-if="isCollapse" /> <Fold v-else
+          /></el-icon>
+          <div class="bread">面包屑</div>
+        </div>
+        <div class="user-info">
+          <el-badge :is-dot="noticeCount" class="item">
+            <el-icon><Bell /></el-icon>
+          </el-badge>
+          <el-dropdown @command="handleLogout">
+            <span class="el-dropdown-link">
+              {{ userInfo ? userInfo.userName : '' }}
+              <el-icon class="el-icon--right"><arrow-down /></el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item command="email"
+                  >邮箱:{{ userInfo ? userInfo.email : '' }}</el-dropdown-item
+                >
+                <el-dropdown-item command="logout">退出</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </div>
       <div class="wrapper">
         <Wave class="wave"></Wave>
@@ -18,12 +56,74 @@
 </template>
 
 <script >
+import TreeMenu from './TreeMenu.vue'
 import Wave from './Wave.vue'
+import {
+  List,
+  Setting,
+  Expand,
+  User,
+  ArrowDown,
+  Bell,
+  Fold
+} from '@element-plus/icons-vue'
 export default {
   name: 'Home',
   components: {
-    Wave
-  }
+    Wave,
+    List,
+    Setting,
+    Expand,
+    User,
+    Bell,
+    ArrowDown,
+    Fold,
+    TreeMenu
+  }, data() {
+    return {
+      userInfo: this.$store.state.userInfo,
+      isCollapse: false,
+      noticeCount: 0,
+      menuList: []
+    }
+  },
+  mounted() {
+    // 获取通知条数
+    this.getNoticeCout();
+    // 获取菜单
+    this.getMenuList();
+  },
+  methods: {
+    handleLogout(command) {
+      if (command === 'email') { return }
+      // 退出
+      if (command === 'logout') {
+        this.$store.commit("saveUserInfo", "");
+        this.userInfo = null;
+        this.$router.push('/login');
+      }
+    },
+    toggle() {
+      this.isCollapse = !this.isCollapse
+    },
+    async getNoticeCout() {
+      try {
+        const count = await this.$api.noticeCount()
+        this.noticeCount = count;
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async getMenuList() {
+      try {
+        const list = await this.$api.getMenuList()
+        this.menuList = list;
+        // console.log(this.menuList)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  },
 }
 </script>
 <style scoped lang="scss">
@@ -34,21 +134,53 @@ export default {
     float: left;
     width: 200px;
     transition: width 0.5s;
-    background-image: linear-gradient(92deg, #2d6ebb, #494ab9);
-    background: #111827;
-    color: #9ca3af;
+    background-image: linear-gradient(115deg, var(--pink), var(--sblue));
+    // background: #85cad2e3;
+    color: var(--grey);
     height: 100vh;
     box-shadow: 3px 0px 20px #00000030;
     z-index: 9;
+    .logo {
+      margin: 1rem 0.5rem;
+      display: flex;
+      height: 80px;
+      justify-content: space-around;
+      align-items: center;
+      img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+      }
+      p {
+        color: var(--bwhite);
+      }
+    }
+    .nav-menu {
+      height: calc(100vh - 2rem - 80px);
+      border-right: none;
+    }
+    &.fold {
+      width: 64px;
+    }
+    &.unfold {
+      width: 200px;
+    }
   }
   .content-right {
     margin-left: 200px;
     background-color: #ffebe7;
+    transition: margin-left 0.5s;
+    &.fold {
+      margin-left: 64px;
+    }
+    &.unfold {
+      margin-left: 200px;
+    }
     .nav-top {
       height: 60px;
       background-image: linear-gradient(310deg, #2d6ebb, #494ab9);
       color: #374151;
-      background: #f3f4f6;
+      background: var(--white);
       font-size: 1rem;
       /* margin-bottom: 10px; */
       padding: 0 2vw;
@@ -58,6 +190,20 @@ export default {
       align-items: center;
       justify-content: space-between;
       z-index: 8;
+      .bread-left,
+      .user-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        div {
+          margin-left: 0.5rem;
+        }
+        .el-dropdown-link {
+          // color: #f5acac;
+          color: var(--pink);
+          cursor: pointer;
+        }
+      }
     }
     .wrapper {
       height: calc(100vh - 60px);

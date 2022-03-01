@@ -10,4 +10,18 @@ export default {
       data: params,
     })
   },
+  noticeCount() {
+    return request({
+      url: '/leave/count',
+      method: 'get',
+      data: {},
+    })
+  },
+  getMenuList() {
+    return request({
+      url: '/menu/list',
+      method: 'get',
+      data: {},
+    })
+  },
 }

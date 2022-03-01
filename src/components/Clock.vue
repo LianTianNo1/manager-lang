@@ -47,9 +47,9 @@ export default {
       const hdegree = hours * 30;
       const mdegree = minutes * 6;
       const sdegree = seconds * 6;
-      this.$refs.hour.style.transform = `rotate(${hdegree}deg)`;
-      this.$refs.minute.style.transform = `rotate(${mdegree}deg)`;
-      this.$refs.second.style.transform = `rotate(${sdegree}deg)`;
+      this.$refs.hour && (this.$refs.hour.style.transform = `rotate(${hdegree}deg)`);
+      this.$refs.minute && (this.$refs.minute.style.transform = `rotate(${mdegree}deg)`);
+      this.$refs.second && (this.$refs.second.style.transform = `rotate(${sdegree}deg)`);
     }
   }
 };
@@ -72,25 +72,16 @@ export default {
       border: 20px solid #ffffff;
       border-radius: 100%;
       box-sizing: border-box;
-      border-left: 20px solid #c160ff;
-      border-right: 20px solid #fd7013;
+      border-left: 20px solid var(--pink);
+      border-right: 20px solid var(--sblue);
       box-shadow: inset 2px -1px 9px #00000024;
-      // animation: ringmove 10s infinite alternate;
     }
-    // @keyframes ringmove {
-    //   50% {
-    //     border-radius: 38% 62% 29% 71% / 41% 59% 41% 59%;
-    //   }
-    //   to {
-    //     border-radius: 56% 44% 59% 41% / 50% 47% 53% 50%;
-    //   }
-    // }
 
     .panel {
       position: absolute;
       height: 180px;
       width: 180px;
-      background-color: #f06966;
+      background-color: #ffffff;
       box-shadow: 1px 1px 3px #23202070, inset 1px 1px 9px #f4f4f4;
       margin: auto;
       left: 0;
@@ -144,7 +135,7 @@ export default {
       width: 3.5px;
       top: 60px;
       border-radius: 10px;
-      background-color: #e6e6e6;
+      background-color: var(--grey);
     }
     .second {
       height: 70px;
@@ -161,20 +152,21 @@ export default {
       top: 0;
       bottom: 0;
       margin: auto;
-      background-color: orange;
-      border: 2px solid white;
+      background-color: var(--orange);
+      border: 2px solid var(--bwhite);
       border-radius: 100%;
     }
     .mynum {
       font-family: 'verdana';
       font-size: 1.2em;
-      color: white;
+      color: var(--bwhite);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100%;
       span {
         position: absolute;
+        color: var(--spink);
         transform: rotate(calc(var(--i) * 30deg)) translate(0px, 75px);
       }
     }

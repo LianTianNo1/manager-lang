@@ -2,8 +2,8 @@
   <div class="welcome">
     <div class="content">
       <div class="sub-title">欢迎来到</div>
-      <div class="title">通用后台管理系统</div>
-      <div class="desc">使用Vue3+Koa+Mongo打造通用后台管理系统</div>
+      <div class="title">小浪通用后台管理系统</div>
+      <div class="desc">基于Vue3+Koa2+MongoDB通用后台管理系统</div>
     </div>
     <Clock></Clock>
   </div>
@@ -26,7 +26,12 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: linear-gradient(180deg, #ff9200, transparent 50%);
+  background-image: linear-gradient(
+    142deg,
+    var(--sblue) 0%,
+    var(--spink) 28%,
+    transparent 50%
+  );
   .content {
     position: relative;
     bottom: 40px;
@@ -34,7 +39,7 @@ export default {
     .sub-title {
       font-size: 56px;
       line-height: 42px;
-      color: #fff;
+      color: var(--bwhite);
       margin-bottom: 5rem;
       font-weight: 600;
       letter-spacing: 10px;
@@ -42,19 +47,13 @@ export default {
     .title {
       font-size: 40px;
       line-height: 62px;
-      color: #c160ff;
+      color: var(--pink);
     }
     .desc {
       text-align: right;
       font-size: 14px;
-      color: #999;
+      color: var(--grey);
     }
-  }
-  .img {
-    margin-left: 105px;
-    background-image: url('./../assets/images/welcome.png');
-    width: 371px;
-    height: 438px;
   }
 }
 </style>
