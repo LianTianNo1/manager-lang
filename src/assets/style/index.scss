@@ -60,18 +60,18 @@ a{
 * 公共样式
 */
 .query-form {
-  background-color: #ffffff;
+  background-color: var(--swhite);
   padding: 22px 20px 0;
   border-radius: 5px;
 }
 .base-table {
   border-radius: 5px;
-  background: #ffffff;
+  background: var(--swhite);
   margin-top: 20px;
   margin-bottom: 20px;
   .action {
     border-radius: 5px 5px 0px 0px;
-    background: #ffffff;
+    background: var(--swhite);
     padding: 20px;
     border-bottom: 1px solid #ece8e8;
   }

@@ -17,7 +17,7 @@ const app = createApp(App)
 app.config.globalProperties.$request = request
 app.config.globalProperties.$storage = storage
 app.config.globalProperties.$api = api
-app.use(ElementPlus)
+app.use(ElementPlus, { size: 'small' })
 app.use(router)
 app.use(store)
 

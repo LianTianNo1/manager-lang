@@ -22,10 +22,12 @@ export default {
 
 <style lang="scss">
 .welcome {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  z-index: 2;
   background-image: linear-gradient(
     142deg,
     var(--sblue) 0%,

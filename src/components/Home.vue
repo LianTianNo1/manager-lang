@@ -37,7 +37,9 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item command="email"
-                  >邮箱:{{ userInfo ? userInfo.email : '' }}</el-dropdown-item
+                  >邮箱:{{
+                    userInfo ? userInfo.userEmail : ''
+                  }}</el-dropdown-item
                 >
                 <el-dropdown-item command="logout">退出</el-dropdown-item>
               </el-dropdown-menu>
@@ -47,9 +49,9 @@
       </div>
       <div class="wrapper">
         <Wave class="wave"></Wave>
-        <div class="main-home">
-          <router-view></router-view>
-        </div>
+        <router-view></router-view>
+        <!-- <div class="main-home">
+        </div> -->
       </div>
     </div>
   </div>

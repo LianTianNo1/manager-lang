@@ -8,4 +8,10 @@
   --ssblue: #84bdd869;
   --grey: #999;
   --orange: orange;
+  --swhite: #ffffff94;
+}
+
+.el-table tr,
+.el-table {
+  background: transparent !important;
 }

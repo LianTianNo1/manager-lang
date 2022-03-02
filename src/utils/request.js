@@ -25,7 +25,7 @@ service.interceptors.request.use((req) => {
   // 获取到请求头判断是否有token 还没实现
   const headers = req.headers
   // 获取到localstorage中userInfo中的token
-  const { token } = storage.getItem('userInfo')
+  const { token } = storage.getItem('userInfo') || ' '
   // 以后的请求都将携带token去请求
   if (!headers.Authorization) headers.Authorization = 'Bearer ' + token
   return req
