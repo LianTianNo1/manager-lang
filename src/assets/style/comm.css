@@ -4,14 +4,24 @@
   --bwhite: #fff;
   --pink: #f9b2b2;
   --spink: #ff607740;
+  --sspink: #f56c6c96;
   --sblue: #7fc9d2;
   --ssblue: #84bdd869;
   --grey: #999;
   --orange: orange;
   --swhite: #ffffff94;
+  --sswhite: #e3ebee96;
+  --sred: #f56c6c;
 }
 
 .el-table tr,
 .el-table {
   background: transparent !important;
+}
+
+.el-menu {
+  --el-menu-active-color: var(--sred) !important;
+  --el-menu-bg-color: var(--sswhite) !important;
+  --el-menu-hover-bg-color: var(--sspink) !important;
+  --el-menu-text-color: var(--grey) !important;
 }
