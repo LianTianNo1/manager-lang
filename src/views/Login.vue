@@ -28,19 +28,17 @@
             >登录</el-button
           >
         </el-form-item>
-        <el-icon><bottom /></el-icon>
       </el-form>
     </div>
   </div>
 </template>
 
 <script>
-import { Lock, Avatar } from '@element-plus/icons-vue'
+
 export default {
   name: 'login',
   components: {
-    Avatar,
-    Lock
+
   },
   data() {
     return {

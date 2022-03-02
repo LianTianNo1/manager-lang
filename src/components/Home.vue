@@ -6,6 +6,7 @@
         <p v-show="!isCollapse">lang Manager</p>
       </div>
       <el-menu
+        :default-active="activeMenu"
         default-active="2"
         text-color="var(--bwhite)"
         background-color="var(--ssblue)"
@@ -22,10 +23,10 @@
           <el-icon @click="toggle"
             ><Expand v-if="isCollapse" /> <Fold v-else
           /></el-icon>
-          <div class="bread">面包屑</div>
+          <div class="bread"><BreadCrumb></BreadCrumb></div>
         </div>
         <div class="user-info">
-          <el-badge :is-dot="noticeCount" class="item">
+          <el-badge :is-dot="noticeCount > 0 ? true : false" class="item">
             <el-icon><Bell /></el-icon>
           </el-badge>
           <el-dropdown @command="handleLogout">
@@ -57,34 +58,24 @@
 
 <script >
 import TreeMenu from './TreeMenu.vue'
+import BreadCrumb from './BreadCrumb.vue'
 import Wave from './Wave.vue'
-import {
-  List,
-  Setting,
-  Expand,
-  User,
-  ArrowDown,
-  Bell,
-  Fold
-} from '@element-plus/icons-vue'
+
+
 export default {
   name: 'Home',
   components: {
     Wave,
-    List,
-    Setting,
-    Expand,
-    User,
-    Bell,
-    ArrowDown,
-    Fold,
-    TreeMenu
+    TreeMenu,
+    BreadCrumb
   }, data() {
     return {
       userInfo: this.$store.state.userInfo,
       isCollapse: false,
       noticeCount: 0,
-      menuList: []
+      menuList: [],
+      // 选中状态
+      activeMenu: location.hash.slice(1),
     }
   },
   mounted() {

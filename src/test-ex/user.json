@@ -1,0 +1,19 @@
+{
+  "_id" : ObjectId("621a44122e746242e4ae6131"),
+  "state": 1,
+  "role": "0",
+  "roleList": [
+    "60180b07bleaed6c45fbebdb",
+    "60150cb764de99631b2c3cd3",
+    "60180b59bleaed6c45fbebdc"
+  ],
+  "deptId": ["60167059c9027b7d2c520a61", "60167345c6a4417f2d27506f"],
+  "userId": 1000001,
+  "userName": "lang",
+  "userEmail": "158@qq.com",
+  "createTime": "2022-02-09T12:22:06.381z",
+  "lastLoginTime": "2022-02-09T12:22:06.381z",
+  "__v": 0,
+  "job": "前端工程师",
+  "mobile": "17674519579"
+}

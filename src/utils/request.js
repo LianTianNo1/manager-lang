@@ -8,6 +8,8 @@ import config from './../config'
 import { ElMessage } from 'element-plus'
 //  导入的路由的实例
 import router from './../router'
+// 导入自己封装的storage
+import storage from './storage'
 
 const TOKEN_INVALID = 'Token认证失败，请重新登录'
 const NETWORK_ERROR = '网络请求异常，请稍后重试'
@@ -22,7 +24,10 @@ const service = axios.create({
 service.interceptors.request.use((req) => {
   // 获取到请求头判断是否有token 还没实现
   const headers = req.headers
-  if (!headers.Authorization) headers.Authorization = 'Bearer ' + 'lang'
+  // 获取到localstorage中userInfo中的token
+  const { token } = storage.getItem('userInfo')
+  // 以后的请求都将携带token去请求
+  if (!headers.Authorization) headers.Authorization = 'Bearer ' + token
   return req
 })
 
