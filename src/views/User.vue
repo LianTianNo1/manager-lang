@@ -26,7 +26,7 @@
     <div class="base-table">
       <!-- 列表操作 -->
       <div class="action">
-        <el-button type="primary">新增</el-button>
+        <el-button @click="handleCreate" type="primary">新增</el-button>
         <el-button type="danger" @click="handlePatchDel">批量删除</el-button>
       </div>
       <!-- 用户列表 -->
@@ -59,6 +59,75 @@
         :page-size="pager.pageSize"
         @current-change="handleCurrentChange"
       />
+      <el-dialog title="用户新增" v-model="showModal">
+        <el-form
+          ref="dialogForm"
+          :model="userForm"
+          label-width="100px"
+          :rules="rules"
+        >
+          <el-form-item label="用户名" prop="userName">
+            <el-input
+              v-model="userForm.userName"
+              :disabled="action == 'edit'"
+              placeholder="请输入用户名称"
+            />
+          </el-form-item>
+          <el-form-item label="邮箱" prop="userEmail">
+            <el-input
+              v-model="userForm.userEmail"
+              :disabled="action == 'edit'"
+              placeholder="请输入用户邮箱"
+            >
+              <template #append>@lang.com</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="手机号" prop="mobile">
+            <el-input v-model="userForm.mobile" placeholder="请输入手机号" />
+          </el-form-item>
+          <el-form-item label="岗位" prop="job">
+            <el-input v-model="userForm.job" placeholder="请输入岗位" />
+          </el-form-item>
+          <el-form-item label="状态" prop="state">
+            <el-select v-model="userForm.state">
+              <el-option :value="1" label="在职"></el-option>
+              <el-option :value="2" label="离职"></el-option>
+              <el-option :value="3" label="试用期"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="系统角色" prop="roleList">
+            <el-select
+              v-model="userForm.roleList"
+              placeholder="请选择用户系统角色"
+              multiple
+              style="width: 100%"
+            >
+              <el-option
+                v-for="role in roleList"
+                :key="role._id"
+                :label="role.roleName"
+                :value="role._id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="部门" prop="deptId">
+            <el-cascader
+              v-model="userForm.deptId"
+              placeholder="请选择所属部门"
+              :options="deptList"
+              :props="{ checkStrictly: true, value: '_id', label: 'deptName' }"
+              clearable
+              style="width: 100%"
+            ></el-cascader>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="handleClose">取 消</el-button>
+            <el-button type="primary" @click="handleSubmit">确 定</el-button>
+          </span>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -128,13 +197,17 @@ export default {
     onMounted(() => {
       // 获取用户列表
       getUserList();
+      // 获取部门列表
+      getDeptList();
+      // 获取角色列表
+      getRoleList();
     });
     // 获取用户列表和分页信息
     const getUserList = async () => {
       let params = { ...user, ...pager }
       try {
         const { list, page } = await proxy.$api.getUserList(params)
-        console.log('page', page)
+        // console.log('page', page)
         userList.value = list
         pager.total = page.total
       } catch (error) {
@@ -147,10 +220,10 @@ export default {
     const handleQuery = () => {
       getUserList()
     }
-    //  重置
-    const handleReset = () => {
-      proxy.$refs.form.resetFields()
-    }
+    // 重置查询表单
+    const handleReset = (form) => {
+      proxy.$refs[form].resetFields();
+    };
     // 监听分页变化
     const handleCurrentChange = (current) => {
       // 设置第几页
@@ -196,11 +269,93 @@ export default {
       });
       checkedUserIds.value = arr;
     };
+    // 定义用户操作行为
+    const action = ref("add");
+    // 弹框显示对象dialog
+    const showModal = ref(false);
+    // 新增用户Form对象
+    const userForm = reactive({
+      state: 3,
+    });
+    // 用户弹窗关闭
+    const handleClose = () => {
+      showModal.value = false;
+      handleReset('dialogForm');
+    };
+    // 定义表单校验规则
+    const rules = reactive({
+      userName: [
+        {
+          required: true,
+          message: "请输入用户名称",
+          trigger: "blur",
+        },
+      ],
+      userEmail: [
+        { required: true, message: "请输入用户邮箱", trigger: "blur" },
+      ],
+      mobile: [
+        {
+          pattern: /1[3-9]\d{9}/,
+          message: "请输入正确的手机号格式",
+          trigger: "blur",
+        },
+      ],
+      deptId: [
+        {
+          required: true,
+          message: "请输入用户邮箱",
+          trigger: "blur",
+        },
+      ],
+    });
 
-    const handleCreate = () => { }
+    // 用户新增
+    const handleCreate = () => {
+      action.value = "add";
+      showModal.value = true;
+    }
+
+    // 所有角色列表
+    const roleList = ref([]);
+    // 获取角色列表
+    const getRoleList = async () => {
+      let list = await proxy.$api.getRoleList();
+      roleList.value = list;
+    };
+
+    // 所有部门列表
+    const deptList = ref([]);
+    // 获取部门列表
+    const getDeptList = async () => {
+      let list = await proxy.$api.getDeptList();
+      deptList.value = list;
+    };
+    // 用户提交
+    const handleSubmit = () => {
+      proxy.$refs.dialogForm.validate(async (valid) => {
+        if (valid) {
+          let params = toRaw(userForm);
+          params.userEmail += "@lang.com";
+          // 请求方式
+          params.action = action.value;
+          let res = await proxy.$api.userSubmit(params);
+          if (res) {
+            // 隐藏dialog
+            showModal.value = false;
+            proxy.$message.success("用户创建成功");
+            // 清空添加信息的form
+            handleReset("dialogForm");
+            // 重新获取用户列表
+            getUserList();
+          }
+
+        }
+      });
+    };
     const handleEdit = () => { }
     return {
-      columns, pager, user, userList, handleCurrentChange, handleQuery, getUserList, handleReset, handleCreate, handleDel, handleEdit, handlePatchDel, handleSelectionChange,
+      getRoleList, getDeptList, deptList, roleList, userForm, handleClose, rules, showModal, handleSubmit, columns, pager, user, userList, handleCurrentChange, handleQuery, getUserList, handleReset, handleCreate, handleDel, handleEdit, handlePatchDel, handleSelectionChange,
     }
 
   }
