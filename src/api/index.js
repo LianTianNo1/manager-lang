@@ -39,7 +39,7 @@ export default {
       url: '/users/delete',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   getRoleList() {
@@ -63,7 +63,7 @@ export default {
       url: '/users/operate',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
 }

@@ -43,9 +43,7 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button size="small" @click="handleEdit(scope.row)"
-              >编辑</el-button
-            >
+            <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button type="danger" size="small" @click="handleDel(scope.row)"
               >删除</el-button
             >
@@ -63,12 +61,7 @@
       >
       </el-pagination>
       <el-dialog title="用户新增" v-model="showModal">
-        <el-form
-          ref="dialogForm"
-          :model="userForm"
-          label-width="100px"
-          :rules="rules"
-        >
+        <el-form ref="dialogForm" :model="userForm" label-width="100px" :rules="rules">
           <el-form-item label="用户名" prop="userName">
             <el-input
               v-model="userForm.userName"
@@ -135,21 +128,21 @@
   </div>
 </template>
 <script>
-import utils from '@/utils/utils'
+import utils from "@/utils/utils";
 import { getCurrentInstance, onMounted, reactive, ref, toRaw } from "vue";
 export default {
   name: "User",
   setup() {
     // 解构出上下文
-    const { proxy } = getCurrentInstance()
-    const user = reactive({ state: 0 })
+    const { proxy } = getCurrentInstance();
+    const user = reactive({ state: 1 });
     // 用户列表
-    const userList = ref([])
+    const userList = ref([]);
     // 分页
     const pager = reactive({
       pageNum: 1,
       pageSize: 8,
-    })
+    });
     // 定义动态表格-格式
     const columns = reactive([
       {
@@ -214,22 +207,21 @@ export default {
     });
     // 获取用户列表和分页信息
     const getUserList = async () => {
-      let params = { ...user, ...pager }
+      let params = { ...user, ...pager };
       try {
-        const { list, page } = await proxy.$api.getUserList(params)
+        const { list, page } = await proxy.$api.getUserList(params);
         // console.log('page', page)
-        userList.value = list
-        pager.total = page.total
+        userList.value = list;
+        pager.total = page.total;
       } catch (error) {
-        proxy.$message.error('获取数据出现异常')
-        console.log(error)
+        proxy.$message.error("获取数据出现异常");
+        console.log(error);
       }
-
-    }
+    };
     // 查询用户
     const handleQuery = () => {
-      getUserList()
-    }
+      getUserList();
+    };
     // 重置查询表单
     const handleReset = (form) => {
       proxy.$refs[form].resetFields();
@@ -237,20 +229,24 @@ export default {
     // 监听分页变化
     const handleCurrentChange = (current) => {
       // 设置第几页
-      pager.pageNum = current
+      pager.pageNum = current;
       // 再重新进行分页查询
-      getUserList()
-    }
+      getUserList();
+    };
     // 删除用户
     const handleDel = async (row) => {
-      await proxy.$api.userDel({
+      const res = await proxy.$api.userDel({
         // 可删除多个 userId:[id1,id2,...]
-        userId: [row.userId]
-      })
-      proxy.$message.success('删除成功！')
-      getUserList()
-
-    }
+        userIds: [row.userId],
+      });
+      // 判断改变条数
+      if (res.modifiedCount > 0) {
+        proxy.$message.success("删除成功");
+        getUserList();
+      } else {
+        proxy.$message.success("修改失败");
+      }
+    };
     // 选中用户列表对象
     const checkedUserIds = ref([]);
     // 删除多条信息
@@ -263,7 +259,7 @@ export default {
         userIds: checkedUserIds.value, //可单个删除，也可批量删除
       });
       // 判断改变条数
-      if (res.nModified > 0) {
+      if (res.modifiedCount > 0) {
         proxy.$message.success("删除成功");
         getUserList();
       } else {
@@ -290,7 +286,7 @@ export default {
     // 用户弹窗关闭
     const handleClose = () => {
       showModal.value = false;
-      handleReset('dialogForm');
+      handleReset("dialogForm");
     };
     // 定义表单校验规则
     const rules = reactive({
@@ -301,9 +297,7 @@ export default {
           trigger: "blur",
         },
       ],
-      userEmail: [
-        { required: true, message: "请输入用户邮箱", trigger: "blur" },
-      ],
+      userEmail: [{ required: true, message: "请输入用户邮箱", trigger: "blur" }],
       mobile: [
         {
           pattern: /1[3-9]\d{9}/,
@@ -324,7 +318,7 @@ export default {
     const handleCreate = () => {
       action.value = "add";
       showModal.value = true;
-    }
+    };
 
     // 所有角色列表
     const roleList = ref([]);
@@ -350,16 +344,15 @@ export default {
           // 请求方式
           params.action = action.value;
           let res = await proxy.$api.userSubmit(params);
-          if (res) {
-            // 隐藏dialog
-            showModal.value = false;
-            proxy.$message.success("用户创建成功");
-            // 清空添加信息的form
-            handleReset("dialogForm");
-            // 重新获取用户列表
-            getUserList();
-          }
-
+          // 隐藏dialog
+          showModal.value = false;
+          proxy.$message.success(
+            action.value === "add" ? "用户创建成功！" : "用户更新成功！"
+          );
+          // 清空添加信息的form
+          handleReset("dialogForm");
+          // 重新获取用户列表
+          getUserList();
         }
       });
     };
@@ -376,11 +369,32 @@ export default {
       });
     };
     return {
-      action, handleEdit, getRoleList, getDeptList, deptList, roleList, userForm, handleClose, rules, showModal, handleSubmit, columns, pager, user, userList, handleCurrentChange, handleQuery, getUserList, handleReset, handleCreate, handleDel, handlePatchDel, handleSelectionChange,
-    }
-
-  }
-}
+      action,
+      handleEdit,
+      getRoleList,
+      getDeptList,
+      deptList,
+      roleList,
+      userForm,
+      handleClose,
+      rules,
+      showModal,
+      handleSubmit,
+      columns,
+      pager,
+      user,
+      userList,
+      handleCurrentChange,
+      handleQuery,
+      getUserList,
+      handleReset,
+      handleCreate,
+      handleDel,
+      handlePatchDel,
+      handleSelectionChange,
+    };
+  },
+};
 </script>
 <style scoped lang="scss">
 .user-manage {
