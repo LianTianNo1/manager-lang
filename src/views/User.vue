@@ -396,12 +396,4 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss">
-.user-manage {
-  position: relative;
-  background-image: linear-gradient(145deg, var(--spink), var(--sblue));
-}
-.base-table {
-  background: var(--swhite);
-}
-</style>
+<style scoped lang="scss"></style>
