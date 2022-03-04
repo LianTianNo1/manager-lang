@@ -13,7 +13,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleQuery">查询</el-button>
+          <el-button type="primary" @click="getMenuList">查询</el-button>
           <el-button @click="handleReset('form')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -113,7 +113,7 @@ export default {
     // 获取菜单列表
     const getMenuList = async () => {
       try {
-        const list = await proxy.$api.getMenuList();
+        const list = await proxy.$api.getMenuList(queryForm);
         menuList.value = list;
       } catch (error) {
         throw new Error(error);
@@ -175,8 +175,6 @@ export default {
     // 查询表单
     const queryForm = reactive([]);
 
-    // 查询菜单
-    const handleQuery = () => {};
     // 重置查询表单
     // 方便复用所以传入的是动态的form ref
     const handleReset = (form) => {
@@ -184,6 +182,21 @@ export default {
     };
     // 控制dialog的出现
     const showModal = ref(false);
+    const rules = reactive({
+      menuName: [
+        {
+          required: true,
+          message: "请输入菜单名称",
+          trigger: "blur",
+        },
+        {
+          min: 2,
+          max: 10,
+          message: "长度在2-8个字符",
+          trigger: "blur",
+        },
+      ],
+    });
     // 添加还是编辑方式
     const action = ref("");
     const menuForm = reactive({
@@ -208,13 +221,38 @@ export default {
       handleReset("dialogForm");
     };
     // 编辑
-    const handleEdit = (params) => {};
+    const handleEdit = (row) => {
+      showModal.value = true;
+      action.value = "edit";
+      // 在一次的dom更新后进行操作赋值操作
+      // 这样点击关闭的时候才能清除数据
+      proxy.$nextTick(() => {
+        // 把row拷贝过来赋值给menuForm这样表单就有数据了
+        Object.assign(menuForm, row);
+      });
+    };
     // 删除
-    const handleDel = async (row) => {};
-    // 确认提交
-    const handleSubmit = (params) => {};
+    const handleDel = async (_id) => {
+      await proxy.$api.menuSubmit({ _id, action: "delete" });
+      proxy.$message.success("删除成功");
+      getMenuList();
+    };
+    // 校验确认提交
+    const handleSubmit = () => {
+      proxy.$refs.dialogForm.validate(async (valid) => {
+        if (valid) {
+          let params = { ...menuForm, action };
+          let res = await proxy.$api.menuSubmit(params);
+          showModal.value = false;
+          proxy.$message.success("操作成功");
+          handleReset("dialogForm");
+          getMenuList();
+        }
+      });
+    };
 
     return {
+      rules,
       action,
       showModal,
       menuForm,
@@ -223,7 +261,6 @@ export default {
       queryForm,
       handleClose,
       handleSubmit,
-      handleQuery,
       handleReset,
       handleDel,
       handleAdd,
