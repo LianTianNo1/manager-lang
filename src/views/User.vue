@@ -43,8 +43,10 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button size="mini">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDel(scope.row)"
+            <el-button size="small" @click="handleEdit(scope.row)"
+              >编辑</el-button
+            >
+            <el-button type="danger" size="small" @click="handleDel(scope.row)"
               >删除</el-button
             >
           </template>
@@ -55,10 +57,11 @@
         class="pagination"
         background
         layout="prev, pager, next"
-        :total="pager.total"
+        :total="pager.total || 10"
         :page-size="pager.pageSize"
         @current-change="handleCurrentChange"
-      />
+      >
+      </el-pagination>
       <el-dialog title="用户新增" v-model="showModal">
         <el-form
           ref="dialogForm"
@@ -69,14 +72,14 @@
           <el-form-item label="用户名" prop="userName">
             <el-input
               v-model="userForm.userName"
-              :disabled="action == 'edit'"
+              :disabled="action === 'edit'"
               placeholder="请输入用户名称"
             />
           </el-form-item>
           <el-form-item label="邮箱" prop="userEmail">
             <el-input
               v-model="userForm.userEmail"
-              :disabled="action == 'edit'"
+              :disabled="action === 'edit'"
               placeholder="请输入用户邮箱"
             >
               <template #append>@lang.com</template>
@@ -144,7 +147,7 @@ export default {
     // 分页
     const pager = reactive({
       pageNum: 1,
-      pageSize: 6
+      pageSize: 6,
     })
     // 定义动态表格-格式
     const columns = reactive([
@@ -353,9 +356,20 @@ export default {
         }
       });
     };
-    const handleEdit = () => { }
+    // 用户编辑
+    const handleEdit = (row) => {
+      // 为编辑状态，之后和添加使用同一个接口发给后端，后端判断是添加还是编辑
+      action.value = "edit";
+      // 显示对话框
+      showModal.value = true;
+      // 在对话框显示出来的时候
+      proxy.$nextTick(() => {
+        // 把userFrom做一层浅拷贝，把改行的信息传入进行
+        Object.assign(userForm, row);
+      });
+    };
     return {
-      getRoleList, getDeptList, deptList, roleList, userForm, handleClose, rules, showModal, handleSubmit, columns, pager, user, userList, handleCurrentChange, handleQuery, getUserList, handleReset, handleCreate, handleDel, handleEdit, handlePatchDel, handleSelectionChange,
+      action, handleEdit, getRoleList, getDeptList, deptList, roleList, userForm, handleClose, rules, showModal, handleSubmit, columns, pager, user, userList, handleCurrentChange, handleQuery, getUserList, handleReset, handleCreate, handleDel, handlePatchDel, handleSelectionChange,
     }
 
   }
