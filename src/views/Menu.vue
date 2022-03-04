@@ -21,7 +21,7 @@
     <div class="base-table">
       <!-- 列表操作 -->
       <div class="action">
-        <el-button @click="handleCreate" type="primary">新增</el-button>
+        <el-button type="primary" @click="handleAdd(1)">新增</el-button>
       </div>
       <!-- 用户列表 -->
       <el-table :data="menuList" row-key="_id" :tree-props="{ children: 'children' }">
@@ -34,9 +34,9 @@
           :formatter="item.formatter"
         >
         </el-table-column>
-        <el-table-column label="操作" width="150">
+        <el-table-column label="操作" width="220">
           <template #default="scope">
-            <el-button type="primary" size="small" @click="handleAdd(scope.row)"
+            <el-button type="primary" size="small" @click="handleAdd(2, scope.row)"
               >新增</el-button
             >
             <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
@@ -47,6 +47,52 @@
         </el-table-column>
       </el-table>
     </div>
+    <el-dialog title="用户新增" v-model="showModal">
+      <el-form ref="dialogForm" :model="menuForm" label-width="100px" :rules="rules">
+        <el-form-item label="父级菜单" prop="parentId">
+          <el-cascader
+            v-model="menuForm.parentId"
+            :options="menuList"
+            :props="{ checkStrictly: true, value: '_id', label: 'menuName' }"
+            clearable
+          />
+          <span>不选，则直接创建一级菜单</span>
+        </el-form-item>
+        <el-form-item label="菜单类型" prop="menuType">
+          <el-radio-group v-model="menuForm.menuType">
+            <el-radio :label="1">菜单</el-radio>
+            <el-radio :label="2">按钮</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="菜单名称" prop="menuName">
+          <el-input v-model="menuForm.menuName" placeholder="请输入菜单名称" />
+        </el-form-item>
+        <el-form-item label="菜单图标" prop="icon" v-show="menuForm.menuType == 1">
+          <el-input v-model="menuForm.icon" placeholder="请输入岗位" />
+        </el-form-item>
+        <el-form-item label="路由地址" prop="path" v-show="menuForm.menuType == 1">
+          <el-input v-model="menuForm.path" placeholder="请输入路由地址" />
+        </el-form-item>
+        <el-form-item label="权限标识" prop="menuCode" v-show="menuForm.menuType == 2">
+          <el-input v-model="menuForm.menuCode" placeholder="请输入权限标识" />
+        </el-form-item>
+        <el-form-item label="组件路径" prop="component" v-show="menuForm.menuType == 1">
+          <el-input v-model="menuForm.component" placeholder="请输入组件路径" />
+        </el-form-item>
+        <el-form-item label="菜单状态" prop="menuState" v-show="menuForm.menuType == 1">
+          <el-radio-group v-model="menuForm.menuState">
+            <el-radio :label="1">正常</el-radio>
+            <el-radio :label="2">停用</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="handleClose">取 消</el-button>
+          <el-button type="primary" @click="handleSubmit">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -97,6 +143,7 @@ export default {
       {
         label: "权限标识",
         prop: "menuCode",
+        width: 90,
       },
       {
         label: "路由地址",
@@ -131,26 +178,54 @@ export default {
     // 查询菜单
     const handleQuery = () => {};
     // 重置查询表单
+    // 方便复用所以传入的是动态的form ref
     const handleReset = (form) => {
       proxy.$refs[form].resetFields();
     };
-    // 新增
-    const handleCreate = (params) => {};
+    // 控制dialog的出现
+    const showModal = ref(false);
+    // 添加还是编辑方式
+    const action = ref("");
+    const menuForm = reactive({
+      parentId: [null],
+      menuType: 1,
+      menuState: 1,
+    });
     // 快捷新增
-    const handleAdd = (params) => {};
+    const handleAdd = (type, row) => {
+      showModal.value = true;
+      action.value = "add";
+      // 如果是下面的row点的新增，把自己的 父ID和自己的ID
+      // 组合到一起 【父父，父，自己】
+      // 除了顶层的id他没有parentID就过滤掉
+      if (type == 2) {
+        menuForm.parentId = [...row.parentId, row._id].filter((item) => item);
+      }
+    };
+    // 弹框关闭
+    const handleClose = () => {
+      showModal.value = false;
+      handleReset("dialogForm");
+    };
     // 编辑
     const handleEdit = (params) => {};
     // 删除
     const handleDel = async (row) => {};
+    // 确认提交
+    const handleSubmit = (params) => {};
 
     return {
+      action,
+      showModal,
+      menuForm,
       menuList,
       columns,
       queryForm,
+      handleClose,
+      handleSubmit,
       handleQuery,
       handleReset,
       handleDel,
-      handleCreate,
       handleAdd,
       handleEdit,
       getMenuList,
