@@ -135,6 +135,7 @@
   </div>
 </template>
 <script>
+import utils from '@/utils/utils'
 import { getCurrentInstance, onMounted, reactive, ref, toRaw } from "vue";
 export default {
   name: "User",
@@ -147,7 +148,7 @@ export default {
     // 分页
     const pager = reactive({
       pageNum: 1,
-      pageSize: 6,
+      pageSize: 8,
     })
     // 定义动态表格-格式
     const columns = reactive([
@@ -188,11 +189,17 @@ export default {
         label: "注册时间",
         prop: "createTime",
         width: 180,
+        formatter: (row, column, value) => {
+          return utils.formateDate(new Date(value));
+        },
       },
       {
         label: "最后登录时间",
         prop: "lastLoginTime",
         width: 180,
+        formatter: (row, column, value) => {
+          return utils.formateDate(new Date(value));
+        },
       },
     ]);
 
