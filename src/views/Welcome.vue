@@ -10,13 +10,12 @@
 </template>
 
 <script>
-// const Clock = () => import('../components/Clock.vue')
-import Clock from '../components/Clock.vue'
+import Clock from "../components/Clock.vue";
 export default {
   name: "welcome",
   components: {
-    Clock
-  }
+    Clock,
+  },
 };
 </script>
 

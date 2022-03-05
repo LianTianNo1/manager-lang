@@ -1,4 +1,3 @@
-
 <template>
   <div class="login-wrapper">
     <div class="modal">
@@ -24,9 +23,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="login" class="btn-login" type="primary"
-            >登录</el-button
-          >
+          <el-button @click="login" class="btn-login" type="primary">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -34,53 +31,54 @@
 </template>
 
 <script>
-
+import { getCurrentInstance, reactive } from "vue";
 export default {
-  name: 'login',
-  components: {
-
-  },
-  data() {
-    return {
-      user: {
-        userName: "",
-        userPwd: "",
-      }, rules: {
-        userName: [
-          {
-            required: true,
-            message: "请输入用户名",
-            trigger: "blur",
-          },
-        ],
-        userPwd: [
-          {
-            required: true,
-            message: "请输入密码",
-            trigger: "blur",
-          },
-        ],
-      },
-    }
-  },
-  methods: {
-    goHome() {
-      this.$router.push('/welcome')
-    },
-    login() {
-      this.$refs.userForm.validate((valid) => {
+  name: "login",
+  setup() {
+    const { proxy } = getCurrentInstance();
+    const user = reactive({
+      userName: "",
+      userPwd: "",
+    });
+    const rules = reactive({
+      userName: [
+        {
+          required: true,
+          message: "请输入用户名",
+          trigger: "blur",
+        },
+      ],
+      userPwd: [
+        {
+          required: true,
+          message: "请输入密码",
+          trigger: "blur",
+        },
+      ],
+    });
+    const goHome = () => {
+      proxy.$router.push("/welcome");
+    };
+    const login = () => {
+      proxy.$refs.userForm.validate((valid) => {
         if (valid) {
-          this.$api.login(this.user).then((res) => {
-            this.$store.commit("saveUserInfo", res);
-            this.$router.push("/welcome");
+          proxy.$api.login(user).then((res) => {
+            proxy.$store.commit("saveUserInfo", res);
+            proxy.$router.push("/welcome");
           });
         } else {
           return false;
         }
       });
-    }
-  }
-}
+    };
+    return {
+      goHome,
+      login,
+      user,
+      rules,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -97,8 +95,7 @@ export default {
   .modal {
     width: 500px;
     background: #d4e2ef57;
-    box-shadow: 20px 20px 60px #436593, -20px -20px 60px #c1d4e9,
-      0 0 2vh 2vh #537ca8;
+    box-shadow: 20px 20px 60px #436593, -20px -20px 60px #c1d4e9, 0 0 2vh 2vh #537ca8;
     padding: 1em;
     border-radius: 20px;
     overflow: hidden;

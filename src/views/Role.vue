@@ -200,7 +200,7 @@ export default {
     const action = ref("");
     // 创建
     const handleAdd = (params) => {
-      action.value = "create";
+      action.value = "add";
       showModal.value = true;
     };
     // 弹框关闭
