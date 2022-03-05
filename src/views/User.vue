@@ -203,7 +203,7 @@ export default {
       // 获取部门列表
       getDeptList();
       // 获取角色列表
-      getRoleList();
+      getRoleAllList();
     });
     // 获取用户列表和分页信息
     const getUserList = async () => {
@@ -323,8 +323,8 @@ export default {
     // 所有角色列表
     const roleList = ref([]);
     // 获取角色列表
-    const getRoleList = async () => {
-      let list = await proxy.$api.getRoleList();
+    const getRoleAllList = async () => {
+      let list = await proxy.$api.getRoleAllList();
       roleList.value = list;
     };
 
@@ -371,7 +371,7 @@ export default {
     return {
       action,
       handleEdit,
-      getRoleList,
+      getRoleAllList,
       getDeptList,
       deptList,
       roleList,

@@ -18,7 +18,8 @@
 .el-table {
   background: transparent !important;
 }
-.user-manage {
+.user-manage,
+.role-manage {
   position: relative;
   background-image: linear-gradient(145deg, var(--spink), var(--sblue));
 }

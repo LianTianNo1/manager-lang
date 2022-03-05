@@ -4,7 +4,7 @@
     <div class="query-form">
       <el-form ref="form" :inline="true" :model="queryForm">
         <el-form-item label="菜单名称" prop="menuName">
-          <el-input v-model="queryForm.menuName" placeholder="请输入用户ID" />
+          <el-input v-model="queryForm.menuName" placeholder="请输入菜单名称" />
         </el-form-item>
         <el-form-item label="菜单状态" prop="menuState">
           <el-select v-model="queryForm.state">
@@ -23,7 +23,7 @@
       <div class="action">
         <el-button type="primary" @click="handleAdd(1)">新增</el-button>
       </div>
-      <!-- 用户列表 -->
+      <!-- 菜单列表 -->
       <el-table :data="menuList" row-key="_id" :tree-props="{ children: 'children' }">
         <el-table-column
           v-for="item in columns"
@@ -173,7 +173,7 @@ export default {
       },
     ]);
     // 查询表单
-    const queryForm = reactive([]);
+    const queryForm = reactive({ menuState: 1 });
 
     // 重置查询表单
     // 方便复用所以传入的是动态的form ref
