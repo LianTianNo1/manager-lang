@@ -68,7 +68,7 @@
           <el-input v-model="menuForm.menuName" placeholder="请输入菜单名称" />
         </el-form-item>
         <el-form-item label="菜单图标" prop="icon" v-show="menuForm.menuType == 1">
-          <el-input v-model="menuForm.icon" placeholder="请输入岗位" />
+          <el-input v-model="menuForm.icon" placeholder="请输入菜单图标" />
         </el-form-item>
         <el-form-item label="路由地址" prop="path" v-show="menuForm.menuType == 1">
           <el-input v-model="menuForm.path" placeholder="请输入路由地址" />
@@ -241,7 +241,7 @@ export default {
     const handleSubmit = () => {
       proxy.$refs.dialogForm.validate(async (valid) => {
         if (valid) {
-          let params = { ...menuForm, action };
+          let params = { ...menuForm, action: action.value };
           let res = await proxy.$api.menuSubmit(params);
           showModal.value = false;
           proxy.$message.success("操作成功");
