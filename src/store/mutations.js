@@ -12,4 +12,12 @@ export default {
     // 保存到localstorage一份
     storage.setItem('userInfo', userInfo)
   },
+  saveMenuList(state, list) {
+    state.menuList = list
+    storage.setItem('menuList', list)
+  },
+  saveActionList(state, list) {
+    state.actionList = list
+    storage.setItem('actionList', list)
+  },
 }

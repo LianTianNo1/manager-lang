@@ -10,22 +10,33 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onQueryDept">查询</el-button>
+          <el-button type="primary" @click="onQueryDept" v-hasrole="'dept-query'"
+            >查询</el-button
+          >
           <el-button type="danger" @click="resetFields('searchFormRef')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="base-table">
       <div class="action">
-        <el-button type="primary" @click="onOpenDialog">新增部门</el-button>
+        <el-button type="primary" @click="onOpenDialog" v-hasrole="'dept-create'"
+          >新增部门</el-button
+        >
       </div>
       <div class="p-table-wrap">
         <el-table :data="deptList" stripe style="width: 100%" row-key="_id">
           <el-table-column v-for="col in columns" :key="col.prop" v-bind="col" />
           <el-table-column>
             <template #default="scope">
-              <el-button type="primary" @click="onEdit(scope.row)">编辑</el-button>
-              <el-button type="danger" @click="onDelete(scope.row)">删除</el-button>
+              <el-button type="primary" @click="onEdit(scope.row)" v-hasrole="'dept-edit'"
+                >编辑</el-button
+              >
+              <el-button
+                type="danger"
+                @click="onDelete(scope.row)"
+                v-hasrole="'dept-delete'"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>

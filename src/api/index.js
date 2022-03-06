@@ -39,7 +39,7 @@ export default {
       url: '/users/all/list',
       method: 'get',
       data,
-      mock: true,
+      mock: false,
     })
   },
   userDel(params) {
@@ -71,7 +71,7 @@ export default {
       url: '/dept/list',
       method: 'get',
       data,
-      mock: true,
+      mock: false,
     })
   },
   userSubmit(params) {
@@ -111,7 +111,7 @@ export default {
       url: '/dept/list',
       method: 'get',
       data,
-      mock: true,
+      mock: false,
     })
   },
   deptOperateApi(data) {
@@ -119,7 +119,16 @@ export default {
       url: '/dept/operate',
       method: 'post',
       data,
-      mock: true,
+      mock: false,
+    })
+  },
+  // 获取当前角色的权限
+  getPermissionList(data = {}) {
+    return request({
+      url: '/users/getPermissionList',
+      method: 'get',
+      data,
+      mock: false,
     })
   },
 }

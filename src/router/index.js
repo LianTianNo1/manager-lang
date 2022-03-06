@@ -63,10 +63,41 @@ const routes = [
     },
     component: () => import('@/views/Login.vue'),
   },
+  {
+    name: '404',
+    path: '/404',
+    meta: { title: '未找到该页面' },
+    component: () => import('@/views/404.vue'),
+  },
 ]
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+})
+
+// 判断当前地址是否可以访问
+function checkPermission(path) {
+  // 从所有的注册的路由判断当前path是否存在，有的话长度一定大于0
+  let hasPermission = router
+    .getRoutes()
+    .filter((route) => route.path == path).length
+  if (hasPermission) {
+    return false
+  } else {
+    return false
+  }
+}
+// 导航守卫
+router.beforeEach((to, from, next) => {
+  // 如果要去的路由存在 注册的所有的路由上面，进行next()放行
+  if (checkPermission(to.path)) {
+    // 修改每一页的title
+    document.title = to.meta.title
+    next()
+  } else {
+    // 否则去404
+    next('/404')
+  }
 })
 
 export default router

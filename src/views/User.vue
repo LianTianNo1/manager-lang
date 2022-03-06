@@ -26,8 +26,12 @@
     <div class="base-table">
       <!-- 列表操作 -->
       <div class="action">
-        <el-button @click="handleCreate" type="primary">新增</el-button>
-        <el-button type="danger" @click="handlePatchDel">批量删除</el-button>
+        <el-button @click="handleCreate" type="primary" v-hasrole:add="'user-create'"
+          >新增</el-button
+        >
+        <el-button @click="handlePatchDel" type="danger" v-hasrole="'user-delete'"
+          >批量删除</el-button
+        >
       </div>
       <!-- 用户列表 -->
       <el-table :data="userList" @selection-change="handleSelectionChange">
@@ -43,8 +47,14 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button type="danger" size="small" @click="handleDel(scope.row)"
+            <el-button size="small" @click="handleEdit(scope.row)" v-hasrole="'user-edit'"
+              >编辑</el-button
+            >
+            <el-button
+              type="danger"
+              size="small"
+              @click="handleDel(scope.row)"
+              v-hasrole="'user-delete'"
               >删除</el-button
             >
           </template>

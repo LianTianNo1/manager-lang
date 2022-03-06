@@ -20,9 +20,7 @@
     <div :class="['content-right', isCollapse ? 'fold' : 'unfold']">
       <div class="nav-top">
         <div class="bread-left">
-          <el-icon @click="toggle"
-            ><Expand v-if="isCollapse" /> <Fold v-else
-          /></el-icon>
+          <el-icon @click="toggle"><Expand v-if="isCollapse" /> <Fold v-else /></el-icon>
           <div class="bread"><BreadCrumb></BreadCrumb></div>
         </div>
         <div class="user-info">
@@ -31,15 +29,13 @@
           </el-badge>
           <el-dropdown @command="handleLogout">
             <span class="el-dropdown-link">
-              {{ userInfo ? userInfo.userName : '' }}
+              {{ userInfo ? userInfo.userName : "" }}
               <el-icon class="el-icon--right"><arrow-down /></el-icon>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item command="email"
-                  >邮箱:{{
-                    userInfo ? userInfo.userEmail : ''
-                  }}</el-dropdown-item
+                  >邮箱:{{ userInfo ? userInfo.userEmail : "" }}</el-dropdown-item
                 >
                 <el-dropdown-item command="logout">退出</el-dropdown-item>
               </el-dropdown-menu>
@@ -58,19 +54,19 @@
   <div></div>
 </template>
 
-<script >
-import TreeMenu from './TreeMenu.vue'
-import BreadCrumb from './BreadCrumb.vue'
-import Wave from './Wave.vue'
-
+<script>
+import TreeMenu from "./TreeMenu.vue";
+import BreadCrumb from "./BreadCrumb.vue";
+import Wave from "./Wave.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     Wave,
     TreeMenu,
-    BreadCrumb
-  }, data() {
+    BreadCrumb,
+  },
+  data() {
     return {
       userInfo: this.$store.state.userInfo,
       isCollapse: false,
@@ -78,7 +74,7 @@ export default {
       menuList: [],
       // 选中状态
       activeMenu: location.hash.slice(1),
-    }
+    };
   },
   mounted() {
     // 获取通知条数
@@ -88,36 +84,39 @@ export default {
   },
   methods: {
     handleLogout(command) {
-      if (command === 'email') { return }
+      if (command === "email") {
+        return;
+      }
       // 退出
-      if (command === 'logout') {
+      if (command === "logout") {
         this.$store.commit("saveUserInfo", "");
         this.userInfo = null;
-        this.$router.push('/login');
+        this.$router.push("/login");
       }
     },
     toggle() {
-      this.isCollapse = !this.isCollapse
+      this.isCollapse = !this.isCollapse;
     },
     async getNoticeCout() {
       try {
-        const count = await this.$api.noticeCount()
+        const count = await this.$api.noticeCount();
         this.noticeCount = count;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     async getMenuList() {
       try {
-        const list = await this.$api.getMenuList()
-        this.menuList = list;
-        // console.log(this.menuList)
+        const { menuList, actionList } = await this.$api.getPermissionList();
+        this.$store.commit("saveActionList", actionList);
+        this.$store.commit("saveMenuList", menuList);
+        this.menuList = menuList;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    },
   },
-}
+};
 </script>
 <style scoped lang="scss">
 .basic-layour {

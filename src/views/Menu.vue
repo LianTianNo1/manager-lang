@@ -13,7 +13,9 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="getMenuList">查询</el-button>
+          <el-button type="primary" @click="getMenuList" v-hasrole="'menu-query'"
+            >查询</el-button
+          >
           <el-button @click="handleReset('form')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -21,7 +23,9 @@
     <div class="base-table">
       <!-- 列表操作 -->
       <div class="action">
-        <el-button type="primary" @click="handleAdd(1)">新增</el-button>
+        <el-button type="primary" @click="handleAdd(1)" v-hasrole="'menu-create'"
+          >新增</el-button
+        >
       </div>
       <!-- 菜单列表 -->
       <el-table :data="menuList" row-key="_id" :tree-props="{ children: 'children' }">
@@ -36,11 +40,21 @@
         </el-table-column>
         <el-table-column label="操作" width="220">
           <template #default="scope">
-            <el-button type="primary" size="small" @click="handleAdd(2, scope.row)"
+            <el-button
+              type="primary"
+              size="small"
+              @click="handleAdd(2, scope.row)"
+              v-hasrole="'menu-create'"
               >新增</el-button
             >
-            <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button type="danger" size="small" @click="handleDel(scope.row)"
+            <el-button size="small" @click="handleEdit(scope.row)" v-hasrole="'menu-edit'"
+              >编辑</el-button
+            >
+            <el-button
+              type="danger"
+              size="small"
+              @click="handleDel(scope.row)"
+              v-hasrole="'menu-delete'"
               >删除</el-button
             >
           </template>
