@@ -34,6 +34,14 @@ export default {
       mock: false,
     })
   },
+  getAllUserList(data = {}) {
+    return request({
+      url: '/users/all/list',
+      method: 'get',
+      data,
+      mock: true,
+    })
+  },
   userDel(params) {
     return request({
       url: '/users/delete',
@@ -58,11 +66,11 @@ export default {
       mock: false,
     })
   },
-  getDeptList() {
+  getDeptList(data = {}) {
     return request({
       url: '/dept/list',
       method: 'get',
-      data: {},
+      data,
       mock: true,
     })
   },
@@ -96,6 +104,22 @@ export default {
       method: 'post',
       data: params,
       mock: false,
+    })
+  },
+  deptListApi(data) {
+    return request({
+      url: '/dept/list',
+      method: 'get',
+      data,
+      mock: true,
+    })
+  },
+  deptOperateApi(data) {
+    return request({
+      url: '/dept/operate',
+      method: 'post',
+      data,
+      mock: true,
     })
   },
 }
