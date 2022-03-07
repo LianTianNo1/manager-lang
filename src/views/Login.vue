@@ -32,6 +32,9 @@
 
 <script>
 import { getCurrentInstance, reactive } from "vue";
+import { ElMessage } from "element-plus";
+import storage from "@/utils/storage.js";
+
 export default {
   name: "login",
   setup() {
@@ -56,14 +59,12 @@ export default {
         },
       ],
     });
-    const goHome = () => {
-      proxy.$router.push("/welcome");
-    };
     const login = () => {
       proxy.$refs.userForm.validate((valid) => {
         if (valid) {
-          proxy.$api.login(user).then((res) => {
+          proxy.$api.login(user).then(async (res) => {
             proxy.$store.commit("saveUserInfo", res);
+            await loadAsyncRoutes();
             proxy.$router.push("/welcome");
           });
         } else {
@@ -71,9 +72,37 @@ export default {
         }
       });
     };
+    // 异步加载路由
+    const loadAsyncRoutes = async () => {
+      // 拿到token，才去创建路由
+      let userInfo = storage.getItem("userInfo") || {};
+      if (userInfo.token) {
+        try {
+          // 获取该用户的菜单列表
+          const { menuList } = await proxy.$api.getPermissionList();
+          // 通过递归获取到所有的路由
+
+          let routes = utils.generateRoute(menuList);
+          // 通过遍历递归拼接后的路由，创建动态路由
+          routes.map((route) => {
+            // 获取到组件的地址
+            let url = `../views/${route.component}.vue`;
+
+            // 加载组件
+            route.component = () => import(/* @vite-ignore */ url);
+            console.log(route.component);
+            // 通过 addRoute 创建动态路由,在 home 路由下面创建
+            // route 之前我们就通过 generateRoute 拼装好了只是没有加载组件
+            router.addRoute("home", route);
+          });
+        } catch (error) {
+          ElMessage.error(error || "创建动态路由失败");
+        }
+      }
+    };
     return {
-      goHome,
       login,
+      loadAsyncRoutes,
       user,
       rules,
     };

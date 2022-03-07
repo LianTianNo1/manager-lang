@@ -1,7 +1,5 @@
 <template>
   <div>
-    <header class="top-header"></header>
-
     <!--dust particel-->
     <div>
       <div class="starsec"></div>
@@ -161,7 +159,6 @@ input {
 }
 
 .top-header:before {
-  background-image: url(https://1.bp.blogspot.com/-gxsOcYWghHA/Xp_izTh4sFI/AAAAAAAAU8s/y637Fwg99qAuzW9na_NT_uApny8Vce95gCEwYBhgL/s1600/header-footer-gradient-bg.png);
 }
 .top-header:before {
   content: "";
@@ -363,15 +360,13 @@ button {
 /* 2.1. Section error */
 .error {
   min-height: 100vh;
-  position: relative;
+  position: absolute;
   padding: 240px 0;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
   text-align: center;
-  margin-top: 70px;
 }
-
 .error__overlay {
   position: absolute;
   top: 0;
@@ -568,27 +563,26 @@ button {
 .cable {
   width: 8px;
   height: 248px;
-  background-image: linear-gradient(rgb(32 148 218 / 70%), rgb(193 65 25)),
+  box-shadow: 0px 0px 4px 2px #15151533;
+  background-image: linear-gradient(rgb(226 96 96), #c14119),
     linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
     linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
 }
-
 .cover {
   width: 200px;
   height: 80px;
-  background: #0bd5e8;
+  background: #e26060;
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
   position: relative;
   z-index: 200;
 }
-
 .in-cover {
   width: 100%;
   max-width: 200px;
   height: 20px;
   border-radius: 100%;
-  background: #08ffff;
+  background: #3f5555;
   position: absolute;
   left: 0px;
   right: 0px;
@@ -599,23 +593,20 @@ button {
 .in-cover .bulb {
   width: 50px;
   height: 50px;
-  background-color: #08fffa;
+  background-color: #f6ff08;
   border-radius: 50%;
   position: absolute;
   left: 0px;
   right: 0px;
   bottom: -20px;
   margin: 0px auto;
-  -webkit-box-shadow: 0 0 15px 7px rgba(0, 255, 255, 0.8),
-    0 0 40px 25px rgba(0, 255, 255, 0.5), -75px 0 30px 15px rgba(0, 255, 255, 0.2);
-  box-shadow: 0 0 25px 7px rgb(127 255 255 / 80%), 0 0 64px 47px rgba(0, 255, 255, 0.5),
-    0px 0 30px 15px rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 25px 7px #ece44ccc, 0 0 64px 47px #f3d4aa80, 0px 0 30px 15px #ff421a33;
 }
 
 .light {
   width: 200px;
   height: 0px;
-  border-bottom: 900px solid rgb(44 255 255 / 24%);
+  border-bottom: 900px solid rgb(255 244 44 / 24%);
   border-left: 50px solid transparent;
   border-right: 50px solid transparent;
   position: absolute;
