@@ -131,4 +131,29 @@ export default {
       mock: false,
     })
   },
+  // 休假
+  leaveListApi(data = {}) {
+    return request({
+      url: '/leave/list',
+      method: 'get',
+      data,
+      mock: true,
+    })
+  },
+  leaveOperateApi(data = {}) {
+    return request({
+      url: '/leave/operate',
+      method: 'post',
+      data,
+      mock: true,
+    })
+  },
+  leaveCountApi(data = {}) {
+    return request({
+      url: '/leave/count',
+      method: 'get',
+      data,
+      mock: true,
+    })
+  },
 }

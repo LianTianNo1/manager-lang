@@ -34,6 +34,8 @@
 import { getCurrentInstance, reactive } from "vue";
 import { ElMessage } from "element-plus";
 import storage from "@/utils/storage.js";
+import utils from "@/utils/utils.js";
+import router from "@/router/index.js";
 
 export default {
   name: "login",
@@ -90,13 +92,13 @@ export default {
 
             // 加载组件
             route.component = () => import(/* @vite-ignore */ url);
-            console.log(route.component);
             // 通过 addRoute 创建动态路由,在 home 路由下面创建
             // route 之前我们就通过 generateRoute 拼装好了只是没有加载组件
             router.addRoute("home", route);
           });
         } catch (error) {
-          ElMessage.error(error || "创建动态路由失败");
+          // console.log(error);
+          ElMessage.error("创建动态路由失败");
         }
       }
     };

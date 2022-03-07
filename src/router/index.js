@@ -98,7 +98,6 @@ async function loadAsyncRoutes() {
 
         // 加载组件
         route.component = () => import(/* @vite-ignore */ url)
-        console.log('route', route)
         // console.log('route.component', uroute.componentrl)
         // 通过 addRoute 创建动态路由,在 home 路由下面创建
         // route 之前我们就通过 generateRoute 拼装好了只是没有加载组件
