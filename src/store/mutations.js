@@ -20,4 +20,8 @@ export default {
     state.actionList = list
     storage.setItem('actionList', list)
   },
+  // 设置需要审批的总数
+  setLeaveCount(state, count) {
+    state.leaveCount = count
+  },
 }

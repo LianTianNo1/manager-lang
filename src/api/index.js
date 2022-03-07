@@ -137,7 +137,7 @@ export default {
       url: '/leave/list',
       method: 'get',
       data,
-      mock: true,
+      mock: false,
     })
   },
   leaveOperateApi(data = {}) {
@@ -145,7 +145,16 @@ export default {
       url: '/leave/operate',
       method: 'post',
       data,
-      mock: true,
+      mock: false,
+    })
+  },
+  // 审核
+  approveOperateApi(data = {}) {
+    return request({
+      url: '/leave/approve',
+      method: 'post',
+      data,
+      mock: false,
     })
   },
   leaveCountApi(data = {}) {
@@ -153,7 +162,7 @@ export default {
       url: '/leave/count',
       method: 'get',
       data,
-      mock: true,
+      mock: false,
     })
   },
 }

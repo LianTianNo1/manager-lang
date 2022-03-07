@@ -24,8 +24,10 @@
           <div class="bread"><BreadCrumb></BreadCrumb></div>
         </div>
         <div class="user-info">
-          <el-badge :is-dot="noticeCount > 0 ? true : false" class="item">
-            <el-icon><Bell /></el-icon>
+          <el-badge :is-dot="leaveCount > 0 ? true : false" class="item">
+            <el-icon
+              ><Bell @click="leaveCount != 0 ? $router.push('/audit/approve') : ''"
+            /></el-icon>
           </el-badge>
           <el-dropdown @command="handleLogout">
             <span class="el-dropdown-link">
@@ -70,7 +72,6 @@ export default {
     return {
       userInfo: this.$store.state.userInfo,
       isCollapse: false,
-      noticeCount: 0,
       menuList: [],
       // 选中状态
       activeMenu: location.hash.slice(1),
@@ -78,9 +79,15 @@ export default {
   },
   mounted() {
     // 获取通知条数
-    this.getNoticeCout();
+    // this.getNoticeCout();
+    this.$store.dispatch("getLeaveCount");
     // 获取菜单
     this.getMenuList();
+  },
+  computed: {
+    leaveCount() {
+      return this.$store.state.leaveCount;
+    },
   },
   methods: {
     handleLogout(command) {
@@ -119,6 +126,9 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+.el-icon {
+  cursor: pointer;
+}
 .basic-layour {
   position: relative;
   .nav-side {
