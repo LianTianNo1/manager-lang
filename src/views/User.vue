@@ -70,7 +70,7 @@
         @current-change="handleCurrentChange"
       >
       </el-pagination>
-      <el-dialog title="用户新增" v-model="showModal">
+      <el-dialog :title="action === 'add' ? '用户新增' : '用户修改'" v-model="showModal">
         <el-form ref="dialogForm" :model="userForm" label-width="100px" :rules="rules">
           <el-form-item label="用户名" prop="userName">
             <el-input

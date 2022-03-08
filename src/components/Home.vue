@@ -136,7 +136,7 @@ export default {
     float: left;
     width: 200px;
     transition: width 0.5s;
-    background-image: linear-gradient(115deg, var(--pink), var(--sswhite));
+    background-image: linear-gradient(115deg, var(--green), var(--sswhite));
     // background: #85cad2e3;
     color: var(--grey);
     height: 100vh;
